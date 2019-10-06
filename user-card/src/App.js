@@ -13,6 +13,7 @@ export default class App extends Component {
 
   componentDidMount() {
     this.getMyInfo();
+    this.getFollowers();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -36,11 +37,22 @@ export default class App extends Component {
                console.log(error)
             })
   }
+
+  getFollowers = () => {
+     axios.get(`  https://api.github.com/users/${this.state.gitId}/followers`)
+          .then( response => {
+             console.log(response)
+          })
+          .catch(error => {
+             console.log(error);
+          })
+  }
   handleInputChange = (event) => {
      this.setState({
        gitId: event.target.value
      })
   }
+  
   render() {
     return (
       <>
@@ -50,7 +62,7 @@ export default class App extends Component {
           <Form style={{textAlign:'center', margin:'30px auto', padding: '0px 220px'}}>
             <Row>
               <Col>
-                <Form.Control placeholder="Enter Github User Name" />
+                <Form.Control placeholder="Enter Github User Name" name='gitId' onChange={this.handleInputChange} />
               </Col>              
                 <Button style={{width: '300px'}}>Search</Button>              
             </Row>
