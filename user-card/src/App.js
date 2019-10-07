@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import {Card, Button, Form, Row, Col} from 'react-bootstrap';
-import Follower from './Follower';
+import FollowersList from './FollowersList';
+import {Link} from 'react-router-dom';
 
 export default class App extends Component {
   constructor() {
@@ -16,6 +17,7 @@ export default class App extends Component {
 
   componentDidMount() {
     this.getMyInfo();
+    this.getFollowers();
     
   }
 
@@ -45,11 +47,11 @@ export default class App extends Component {
   }
 
   getFollowers = () => {
-     axios.get(`  https://api.github.com/users/${this.state.gitId}/followers`)
+     axios.get(`https://api.github.com/users/${this.state.gitId}/followers`)
           .then( response => {
              console.log(response.data);
-             this.state({
-                followers: response.data
+             this.setState({
+              followers: response.data
              })
           })
           .catch(error => {
@@ -69,6 +71,7 @@ export default class App extends Component {
 
   }
   render() {
+    console.log(this.state.followers)
     return (
       <>
       <div>
@@ -91,8 +94,10 @@ export default class App extends Component {
             <Card.Body>
               <Card.Title>{this.state.info.name}</Card.Title>
               <Card.Text>
+              <Link to='/followers'>
                 <div style={{display:'inline-block'}}>Followers:</div>{this.state.info.followers}{" "}
-                <div style={{display:'inline-block'}}>Followers:</div>{this.state.info.following}
+                </Link>  
+                <div style={{display:'inline-block'}}>Following:</div>{this.state.info.following}
               </Card.Text>
               <a style={{background:'rgba(0,0,0,0.65)', color:'white', textDecoration:'none', padding: '10px 12px'}}
                 href={this.state.info.html_url}  target="_blank">Link To Github</a>
@@ -101,7 +106,7 @@ export default class App extends Component {
         </div>
       </div>
       <div>
-        {this.state.followers.map( (follower,index) => <Follower />)}
+        <FollowersList followers={this.state.followers} />
       </div>
       </>
     )
