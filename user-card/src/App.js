@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import axios from 'axios';
 import {Card, Button, Form, Row, Col} from 'react-bootstrap';
 import FollowersList from './FollowersList';
-import {Link} from 'react-router-dom';
 
 export default class App extends Component {
   constructor() {
@@ -24,6 +23,7 @@ export default class App extends Component {
   componentDidUpdate(prevProps, prevState) {
      if(prevState.isSubmitted != this.state.isSubmitted) {        
         this.getMyInfo();
+        this.getFollowers();
         this.setState({
            isSubmitted:false,
            gitId:''
@@ -93,10 +93,8 @@ export default class App extends Component {
             <Card.Img variant="top" width={220} height={220} src={this.state.info.avatar_url} />
             <Card.Body>
               <Card.Title>{this.state.info.name}</Card.Title>
-              <Card.Text>
-              <Link to='/followers'>
-                <div style={{display:'inline-block'}}>Followers:</div>{this.state.info.followers}{" "}
-                </Link>  
+              <Card.Text>              
+                <div style={{display:'inline-block'}}>Followers:</div>{this.state.info.followers}{" "}                
                 <div style={{display:'inline-block'}}>Following:</div>{this.state.info.following}
               </Card.Text>
               <a style={{background:'rgba(0,0,0,0.65)', color:'white', textDecoration:'none', padding: '10px 12px'}}
